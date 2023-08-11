@@ -1,22 +1,22 @@
 import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRole } from '../enum/users.enum';
 import Task from 'src/api/task/entities/task.entity';
- 
+
 @Entity()
 class User {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id: string;
 
-  @PrimaryColumn()
+  @Column()
   public firstName: string;
 
   @Column()
   public lastName: string;
- 
-  @PrimaryColumn({ unique: true })
+
+  @Column({ unique: true })
   public email: string;
 
-  @PrimaryColumn({
+  @Column({
     type: "enum",
     enum: UserRole,
     default: UserRole.GUEST
@@ -26,8 +26,8 @@ class User {
   @Column({ default: true })
   isActive: boolean;
 
-  @OneToMany(() => Task, (task) => task.userId)
-  tasks: Task[];
+  @OneToMany(() => Task, (task: Task) => task.user)
+  public posts: Task[];
 }
- 
+
 export default User;
