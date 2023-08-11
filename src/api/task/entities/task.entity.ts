@@ -1,11 +1,11 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 import User from 'src/api/users/entities/user.entity';
 
 @Entity()
 class Task {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id: string;
 
   @Column()
   public title: string;
@@ -19,8 +19,8 @@ class Task {
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   lastChangedDateTime: Date;
 
-  @ManyToOne(() => User, (user) => user.tasks)
-  userId: User
+  @ManyToOne(() => User, (user: User) => user.tasks)
+  public user: User;
 }
 
 export default Task;
