@@ -27,7 +27,7 @@ class User {
   isActive: boolean;
 
   @OneToMany(() => Task, (task: Task) => task.user)
-  public posts: Task[];
+  public tasks: Task[];
 }
 
 export default User;
