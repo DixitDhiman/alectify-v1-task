@@ -1,44 +1,50 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Inject } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+
+import { ITaskService } from './task.interface';
 
 import Task from './entities/task.entity';
 
-import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
+
+import { TASK_SERVICE } from './constants';
 
 @ApiTags('Task')
 @Controller('task')
 export class TaskController {
-  constructor(private readonly taskService: TaskService) { }
+  constructor(
+    @Inject(TASK_SERVICE)
+    private readonly _taskService: ITaskService
+  ) { }
 
   @ApiOperation({ description: 'Create task' })
   @ApiResponse({ status: 201, type: Task, description: 'Creates new task object.' })
   @Post()
   async create(@Body() task: CreateTaskDto): Promise<Task> {
-    return this.taskService.create(task);
+    return this._taskService.create(task);
   }
 
   @ApiOperation({ description: 'Get all tasks' })
   @Get()
   findAll() {
-    return this.taskService.findAll();
+    return this._taskService.findAll();
   }
 
   @ApiOperation({ description: 'Get task by id' })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.taskService.findOne(id);
+    return this._taskService.findOne(id);
   }
 
   @ApiOperation({ description: 'Update an task' })
   @Patch(':id')
   update(@Param('id') id: string, @Body() task: Task) {
-    return this.taskService.update(id, task);
+    return this._taskService.update(id, task);
   }
 
   @ApiOperation({ description: 'Delete an task' })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.taskService.remove(id);
+    return this._taskService.remove(id);
   }
 }

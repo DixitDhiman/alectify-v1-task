@@ -1,11 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { AppService } from './app.service';
 
+@ApiTags('Alectify')
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @ApiOperation({ description: 'Get current time' })
   @Get()
